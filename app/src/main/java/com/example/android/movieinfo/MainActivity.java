@@ -1,6 +1,5 @@
 package com.example.android.movieinfo;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,22 +7,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    FragmentManager fragmentManager = getFragmentManager();
-    MainActivityFragment mainActivityFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*if (savedInstanceState == null) {
-            mainActivityFragment = new MainActivityFragment();
-            fragmentManager.beginTransaction()
+        if (savedInstanceState == null) {
+            MainActivityFragment mainActivityFragment = new MainActivityFragment();
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, mainActivityFragment)
                     .commit();
+/*
         }else{
-            mainActivityFragment = (MainActivityFragment) fragmentManager.getFragment(
+           MainActivityFragment mainActivityFragment = (MainActivityFragment) FragmentManager.getFragment(
                     savedInstanceState, "fragmentContent");
-        }*/
+*/
+        }
 
     }
 
