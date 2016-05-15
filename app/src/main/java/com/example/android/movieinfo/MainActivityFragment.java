@@ -40,7 +40,10 @@ public class MainActivityFragment extends Fragment {
     String sortOrder;
 
     private ImageAdapter movieAdapter;
+
     List<MovieParse> movies = new ArrayList<MovieParse>();
+    // 이 부분이 sunshine project와 차이점
+    // detail data가 다름
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
@@ -58,6 +61,9 @@ public class MainActivityFragment extends Fragment {
             storedMovies = savedInstanceState.getParcelableArrayList("stored_movies");
             movies.clear();
             movies.addAll(storedMovies);
+            // Parcel한 movies에 data entry 추가
+            // Lis<MovieParse> movies와 ArrayList<MovieParse> 로 구분한 이유?
+            //  이 방식으로 하지 않으면 일일이 .add()에 의해 entry별로 추가해야 하지 않을까?
         }
 
         FetchMovieData MovieData = new FetchMovieData();
@@ -69,7 +75,11 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        movieAdapter = new ImageAdapter(getActivity(), R.layout.image_ids_array, R.id.Image_Ids_Array, new ArrayList<String>());
+        movieAdapter = new ImageAdapter(
+                getActivity(),
+                R.layout.image_ids_array,
+                R.id.Image_Ids_Array,
+                new ArrayList<String>());
 
 
         GridView Grid_ImageView = (GridView) rootView.findViewById(R.id.gridView_id);
@@ -79,7 +89,9 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieParse movieInfo = movies.get(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieInfo);
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, movieInfo);
+                        // .putParcelableArrayListExtra()
                 startActivity(intent);
             }
         });
@@ -139,6 +151,8 @@ public class MainActivityFragment extends Fragment {
 
                 // Create the request to OpenWeatherMap, and open the connection
                 final String BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
+                // poster의 base_url과 다름
+                // TMDb API 참조
                 final String SORT_BY = "sort_by";
                 final String KEY = "api_key";
                 String sortBy = params[0];
@@ -178,6 +192,8 @@ public class MainActivityFragment extends Fragment {
                 }
                 moviesJsonStr = buffer.toString();
                 //calling method to get data from JSON string
+                Log.v(LOG_TAG, "JasonString" + moviesJsonStr);
+
                 try {
                     //forecastJsonStr_1 = getweatherDataFromJson(forecastJsonStr, 7);
                     return getMoviesDataFromJson(moviesJsonStr);
@@ -186,7 +202,7 @@ public class MainActivityFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                Log.v(LOG_TAG, "JasonString" + moviesJsonStr);
+
 
 
             } catch (IOException e) {
@@ -269,6 +285,7 @@ public class MainActivityFragment extends Fragment {
                  movieAdapter.clear();
                 for(MovieParse movie : results){
                     movieAdapter.add(movie.getPoster());
+                    // .getPoster()는 movieParse class 내에 정의
                 }
 
             }
