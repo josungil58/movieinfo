@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -79,6 +78,8 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieParse movieInfo = movies.get(position);
+                // click된 position의 moviedata를 parse하여 movieinfo에 담아
+                // 그것을 intent의 EXTRA_TEXT로 전달
                 Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieInfo);
                 startActivity(intent);
             }
@@ -98,19 +99,25 @@ public class MainActivityFragment extends Fragment {
         MovieData.execute(prefSortOrder);
     }
 
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            String prefSortOrder = prefs.getString(getString(R.string.sortBy_key),
+*/
+/*            String prefSortOrder = prefs.getString(getString(R.string.sortBy_key),
                     getString(R.string.sortBy_default_value));
 
             FetchMovieData MovieData = new FetchMovieData();
-            MovieData.execute(prefSortOrder);
+            MovieData.execute(prefSortOrder);*//*
+
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+사실 이 전체가 불필요한 중복 코딩작업임
+setting에 대한 것은 이미 MainActivity에서 정의하였으므로 backGround 작업을 위한 fragment에서
+이것을 다시 지정할 필요가 없는 것임 */
 
     public class FetchMovieData extends AsyncTask<String, Void, List<MovieParse>> {
 
@@ -177,6 +184,7 @@ public class MainActivityFragment extends Fragment {
                     return null;
                 }
                 moviesJsonStr = buffer.toString();
+                Log.v(LOG_TAG, "JasonString" + moviesJsonStr);
                 //calling method to get data from JSON string
                 try {
                     //forecastJsonStr_1 = getweatherDataFromJson(forecastJsonStr, 7);
@@ -186,7 +194,7 @@ public class MainActivityFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                Log.v(LOG_TAG, "JasonString" + moviesJsonStr);
+
 
 
             } catch (IOException e) {
@@ -245,14 +253,19 @@ public class MainActivityFragment extends Fragment {
                 // movie object with all the required data
                 JSONObject movie = moviesArray.getJSONObject(i);
                 String title = movie.getString(ORIGINAL_TITLE);
+
                 //PosterArray[i] = MOVIE_POSTER_BASE + MOVIE_POSTER_SIZE + movie.getString(POSTER_PATH);
                 String poster = MOVIE_POSTER_BASE + MOVIE_POSTER_SIZE + movie.getString(POSTER_PATH);
+
                 Log.v(LOG_TAG, "poster Array:" + poster);
+
                 String overview = movie.getString(OVERVIEW);
                 String voteAverage = movie.getString(VOTE_AVERAGE);
                 String releaseDate = getYear(movie.getString(RELEASE_DATE));
 
                 movies.add(new MovieParse(title, poster, overview, voteAverage, releaseDate));
+                // List<movieParse> movies에 .add()를 통해 entry 값 부여
+                // 반복은 data flattenig이 목적인 movieParse class에서 할 일이 아님
 
             }
 
@@ -269,6 +282,7 @@ public class MainActivityFragment extends Fragment {
                  movieAdapter.clear();
                 for(MovieParse movie : results){
                     movieAdapter.add(movie.getPoster());
+                    // .getPoster()는 MovieParse.class에 정의
                 }
 
             }
