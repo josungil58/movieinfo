@@ -6,7 +6,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_title_view"/>
+        android:id="@+id/detail_title_view"
+        android:textColor="#4590eb"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +17,9 @@
 
         <ImageView
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:id="@+id/detail_image_view"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_image_view"
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,19 +28,23 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/detail_release_date"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textColor="#cc75f1"
+                android:textStyle="normal|italic" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/detail_rating_view"
                 android:layout_weight="1"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/detail_overview_view"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:textStyle="normal"
+                android:textColor="#6d6b6b" />
 
 
 

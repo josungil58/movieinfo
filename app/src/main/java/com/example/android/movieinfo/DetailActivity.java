@@ -15,7 +15,13 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailactivity_movieinfo);
 
-           }
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new DetailActivityFragment())
+                    .commit();
+        }
+        // 대체로 savedInstanceState가 null이 아니기 때문에 별 차이가 없음
+    }
 
 
     @Override
